@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillCatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('kategori', [BillCatController::class, 'index']);
+Route::post('kategori', [BillCatController::class, 'store']);
+Route::get('kategori/{id}', [BillCatController::class, 'edit']);
+Route::put('kategori/{id}', [BillCatController::class, 'update']);
+Route::delete('kategori/{id}', [BillCatController::class, 'destroy']);
