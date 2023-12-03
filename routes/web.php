@@ -21,5 +21,5 @@ Route::get('/', function () {
 Route::get('kategori', [BillCatController::class, 'index']);
 Route::post('kategori', [BillCatController::class, 'store']);
 Route::get('kategori/{id}', [BillCatController::class, 'edit']);
-Route::put('kategori/{id}', [BillCatController::class, 'update']);
+Route::put('kategori/{id}', [BillCatController::class, 'update'])->name('updatedata');
 Route::delete('kategori/{id}', [BillCatController::class, 'destroy']);

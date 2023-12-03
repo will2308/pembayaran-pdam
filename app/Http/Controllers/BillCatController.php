@@ -86,20 +86,47 @@ class BillCatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $req, $id)
     {
+        // $kategori = new Client();
+        // $url = 'localhost:8000/api/bill_cat/'.$id;
+        // $reponse = $kategori->request('get', $url);
+        // $gt_content = json_decode($reponse->getBody()->getContents(), true);
+        // // print_r($gt_content);
+        // // echo $url;
+        // if($gt_content['status'] != true){
+        //     $error = $gt_content['message'];
+        //     return redirect()->to('kategori')->withErrors($error);
+        // }else {
+        //     $data = $gt_content['data'];
+        //     return view('content.bill_cat', ['data'=> $data]);
+        // }
+
+
+        $name = $req->name;
+        $desc = $req->desc;
+        $price = $req->price;
+        $parameter = [
+            'name'=> $name,
+            'desc'=> $desc,
+            'price'=> $price
+        ];
+
         $kategori = new Client();
         $url = 'localhost:8000/api/bill_cat/'.$id;
-        $reponse = $kategori->request('get', $url);
+        $reponse = $kategori->request('put', $url, [
+            'headers'=>['Content-type'=>'aplication/json'],
+            'body'=>json_encode($parameter)
+        ]);
         $gt_content = json_decode($reponse->getBody()->getContents(), true);
-        // print_r($gt_content);
-        // echo $url;
+        // $data = $gt_content['data'];
+        // echo $gt_content;
+        // print_r($data);
         if($gt_content['status'] != true){
-            $error = $gt_content['message'];
-            return redirect()->to('kategori')->withErrors($error);
+            $error = $gt_content['data'];
+            return redirect()->to('kategori')->withErrors($error)->withInput();
         }else {
-            $data = $gt_content['data'];
-            return view('content.bill_cat', ['data'=> $data]);
+            return redirect()->to('kategori')->with('success', 'berhasil mengubah data');
         }
     }
 

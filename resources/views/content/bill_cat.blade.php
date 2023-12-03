@@ -20,7 +20,7 @@
     @endif
 
     <!-- START FORM -->
-    <div class="my-3 p-3 bg-body rounded shadow-sm">
+    {{-- <div class="my-3 p-3 bg-body rounded shadow-sm">
         <form action='' method='post'>
             @csrf
             @if (Route::current()->uri == 'kategori/{id}')
@@ -51,10 +51,10 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div> --}}
     <!-- AKHIR FORM -->
 
-    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formcat">tambah</button> --}}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formcat">tambah</button>
     @if (Route::current()->uri == 'kategori')        
     <table class="table table-striped">
         <thead>
@@ -74,7 +74,42 @@
                 <td>{{$kategori['price']}}</td>
                 <td>{{$kategori['desc']}}</td>
                 <td>
-                    <a href="{{ url('kategori/'.$kategori['id']) }}" class="btn btn-warning"> ubah </a>
+                    {{-- <a href="{{ url('kategori/'.$kategori['id']) }}" class="btn btn-warning"> ubah </a> --}}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formcatedit{{$kategori['id']}}">ubah</button>
+                    <div class="modal fade" id="formcatedit{{$kategori['id']}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ url('kategori/'.$kategori['id']) }}" method="put">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Tambah Kategori</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                            @csrf
+                                            @method('put')
+                                            <div class="mb-3">
+                                                <label for="name" class="col-form-label">Nama:</label>
+                                                <input type="text" class="form-control" name="name" value="{{$kategori['name']}}">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="desc" class="col-form-label">Deskripso:</label>
+                                                <textarea class="form-control" name="desc">{{$kategori['desc']}}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="price" class="col-form-label">Harga:</label>
+                                                <input type="text" class="form-control" name="price" value="{{$kategori['price']}}">
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
+                                        <button type="submit" class="btn btn-primary">simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     <form action="{{ url('kategori/'.$kategori['id']) }}" method="post" onsubmit="return confirm('data {{$kategori['name']}} akan dihapus!')" class="d-inline">
                         @csrf
                         @method('delete')
@@ -88,38 +123,39 @@
     </table>
     @endif
 
-    {{-- <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="formcat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Tambah Kategori</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('svbillcat') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="name" class="col-form-label">Nama:</label>
-                            <input type="text" class="form-control" name="name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="desc" class="col-form-label">Deskripso:</label>
-                            <textarea class="form-control" name="desc"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="price" class="col-form-label">Harga:</label>
-                            <input type="text" class="form-control" name="price">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
-                </div>
+                <form action="{{ url('kategori') }}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Tambah Kategori</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            @csrf
+                            @method('post')
+                            <div class="mb-3">
+                                <label for="name" class="col-form-label">Nama:</label>
+                                <input type="text" class="form-control" name="name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="desc" class="col-form-label">Deskripso:</label>
+                                <textarea class="form-control" name="desc"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="col-form-label">Harga:</label>
+                                <input type="text" class="form-control" name="price">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">batal</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 
 
