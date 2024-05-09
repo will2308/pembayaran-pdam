@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\BillCatController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,13 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// Route::apiResource('bill_cat', BillCatController::class); 
-Route::get('bill_cat', [BillCatController::class, 'index']); 
-Route::get('bill_cat/{id}', [BillCatController::class, 'show']); 
-Route::post('bill_cat', [BillCatController::class, 'store']); 
-Route::put('bill_cat/{id}', [BillCatController::class, 'update']); 
-Route::delete('bill_cat/{id}', [BillCatController::class, 'destroy']); 
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+Route::get('error', [AuthController::class, 'verify'])->name('verify');
+
+Route::apiResource('bill_cat', BillCatController::class)->middleware('auth:sanctum'); 
+Route::get('bill_cat_all', [BillCatController::class, 'all'])->middleware('auth:sanctum'); 
+Route::apiResource('user', UserController::class)->middleware('auth:sanctum'); 
+Route::get('user_all', [UserController::class, 'all'])->middleware('auth:sanctum'); 
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
